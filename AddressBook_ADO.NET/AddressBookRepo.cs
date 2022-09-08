@@ -224,8 +224,56 @@ namespace AddressBook_ADO.NET
 
             }
         }
-        
+        public bool CountDataFromCityAndState(AddressBookModel address)
+        {
+            try
+            {
+                List<AddressBookModel> list = new List<AddressBookModel>();
+                SqlConnection connection = new SqlConnection(connectionString);
+                using (connection)
+                {
+                    SqlCommand command = new SqlCommand("CountByCityState", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue(@"City", address.City);
+                    command.Parameters.AddWithValue(@"State", address.State);
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            address.ID = reader.GetInt32(0);
+                            address.FirstName = reader.GetString(1);
+                            address.LastName = reader.GetString(2);
+                            address.Address = reader.GetString(3);
+                            address.City = reader.GetString(4);
+                            address.State = reader.GetString(5);
+                            address.Zip = reader.GetInt64(6);
+                            address.PhoneNumber = reader.GetInt64(7);
+                            address.Email = reader.GetString(8);
+                            list.Add(address);
+                            Console.WriteLine(address.ID + "," + address.FirstName + "," + address.LastName + "," + address.Address + "," + address.City + ","
+                                + address.State + "," + address.Zip + "," + address.PhoneNumber + "," + address.Email);
+                        }
+                        Console.WriteLine("Count the Address");
+                        Console.WriteLine(list.Count());
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("No Data Found");
+                        return false;
+                    }
+                    connection.Close();
+                }
+            }
+            catch (Exception)
+            {
+                throw new AddressException(AddressException.ExceptionType.CONTACT_NOT_FOUND, "Contact not found");
+
+            }
+        }
     }
 }
-      
+    
 

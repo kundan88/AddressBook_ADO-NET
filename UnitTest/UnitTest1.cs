@@ -86,7 +86,17 @@ namespace AddressBookTest
             bool actual = addressBookDetail.GetDataFromCityAndState(address);
             Assert.AreEqual(expected, actual);
         }
-
+        //<summary>
+        //TC 7 : Count Details by city and state
+        //</summary>
+        [Test]
+        public void Count_AddressBook_Details_By_CityState()
+        {
+            bool expected = true;
+            address.City = "Mumbai";
+            address.State = "Maharashrta";
+            bool actual = addressBookDetail.CountDataFromCityAndState(address);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
-
