@@ -10,7 +10,7 @@ namespace AddressBook_ADO.NET
 {
     public class AddressBookDetail
     {
-        static string connectionString = @"Data Source = (localdb)\MSSQLLocalDB; Initial Catalog = AddressBook; Integrated Security = SSPI";
+        static string connectionString = @"Data Source=(localdb)\MSSQLLOCALDB;Initial Catalog=AddressBook;Integrated Security=True";
         static SqlConnection connection = new SqlConnection(connectionString);
 
         public void EstablishConnection()
@@ -49,7 +49,7 @@ namespace AddressBook_ADO.NET
                 using (connection)
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand("Add_Details", connection)
+                    SqlCommand command = new SqlCommand("AddressBookInsert", connection)
                     {
                         CommandType = CommandType.StoredProcedure
                     };
@@ -86,7 +86,7 @@ namespace AddressBook_ADO.NET
             {
                 using (connection)
                 {
-                    SqlCommand command = new SqlCommand("RetrieveDetails", connection);
+                    SqlCommand command = new SqlCommand("AddressBookRetrieve", connection);
                     command.CommandType = CommandType.StoredProcedure;
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
@@ -124,7 +124,7 @@ namespace AddressBook_ADO.NET
             {
                 using (connection)
                 {
-                    SqlCommand command = new SqlCommand("Edit_Details", connection);
+                    SqlCommand command = new SqlCommand("AddressBookUpdate", connection);
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@ID", address.ID);
                     command.Parameters.AddWithValue("@FirstName", address.FirstName);
@@ -152,7 +152,30 @@ namespace AddressBook_ADO.NET
                 throw new AddressException(AddressException.ExceptionType.CONTACT_NOT_FOUND, "Contact not found");
             }
         }
+        public bool RemoveContact(AddressBookModel address)
+        {
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand command = new SqlCommand("AddreeBookRemove", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@ID", address.ID);
+                    connection.Open();
+                    var result = command.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        Console.WriteLine("Contact is Deleted");
+                        return true;
+                    }
+                    return false;
+                    connection.Close();
+                }
+            }
+            catch (Exception)
+            {
+                throw new AddressException(AddressException.ExceptionType.CONTACT_NOT_FOUND, "Contact not found");
+            }
+        }
     }
 }
-
-
