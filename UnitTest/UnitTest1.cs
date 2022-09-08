@@ -1,8 +1,10 @@
+
 using AddressBook_ADO.NET;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
-
-namespace AddressBook.ADO.NET
+namespace AddressBookTest
 {
     public class Tests
     {
@@ -33,6 +35,16 @@ namespace AddressBook.ADO.NET
             Assert.AreEqual(expected, actual);
         }
         //<summary>
+        //TC 3 : Retrieve Details
+        //</summary>
+        [Test]
+        public void Retrive_AddressBook_Details()
+        {
+            int expected = 4;
+            var result = addressBookDetail.RetrieveAddressBookDetails();
+            Assert.AreEqual(expected, result.Count);
+        }
+        //<summary>
         //TC 4 : Update Details
         //</summary>
         [Test]
@@ -43,7 +55,7 @@ namespace AddressBook.ADO.NET
             address.FirstName = "Kundan";
             address.LastName = "Kamble";
             address.Address = "Mumbai";
-            address.City = "mumbai";
+            address.City = "Texas";
             address.State = "colaba";
             address.Zip = 400005;
             address.PhoneNumber = 7410741141;
@@ -62,5 +74,19 @@ namespace AddressBook.ADO.NET
             bool result = addressBookDetail.RemoveContact(address);
             Assert.AreEqual(expected, result);
         }
+        //<summary>
+        //TC 6 : Retrieve Details by city and state
+        //</summary>
+        [Test]
+        public void Retrive_AddressBook_Details_By_CityState()
+        {
+            bool expected = true;
+            address.City = "Mumbai";
+            address.State = "Maharashtra";
+            bool actual = addressBookDetail.GetDataFromCityAndState(address);
+            Assert.AreEqual(expected, actual);
+        }
+
     }
 }
+

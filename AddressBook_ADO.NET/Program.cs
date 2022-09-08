@@ -17,6 +17,9 @@ namespace AddressBook_ADO.NET
                 Console.WriteLine("4: For retrieve AddressBook Details");
                 Console.WriteLine("5: For Update Addressbook Details");
                 Console.WriteLine("6: To Remove AddressBook Details");
+                Console.WriteLine("7: To Retrieve by City and State Name");
+                Console.WriteLine("8: To Count by City and State Name");
+                Console.WriteLine("9: To Sort By City Name");
                 Console.WriteLine("0: For Exit");
                 option = Convert.ToInt32(Console.ReadLine());
                 switch (option)
@@ -97,6 +100,28 @@ namespace AddressBook_ADO.NET
                         int Id = Convert.ToInt32(Console.ReadLine());
                         address.ID = Id;
                         addressBookDetail.RemoveContact(address);
+                        break;
+                    case 7:
+                        Console.WriteLine("Enter city and state");
+                        string cityname = Console.ReadLine();
+                        address.City = cityname;
+                        string statename = Console.ReadLine();
+                        address.State = statename;
+                        addressBookDetail.GetDataFromCityAndState(address);
+                        break;
+                    case 8:
+                        Console.WriteLine("Enter city and state");
+                        string cityName = Console.ReadLine();
+                        address.City = cityName;
+                        string stateName = Console.ReadLine();
+                        address.State = stateName;
+                        addressBookDetail.CountDataFromCityAndState(address);
+                        break;
+                    case 9:
+                        Console.WriteLine("Enter city and state");
+                        string city_Name = Console.ReadLine();
+                        address.City = city_Name;
+                        addressBookDetail.SortContactByCity(address);
                         break;
                     default:
                         Console.WriteLine("Enter a Valid Input");
